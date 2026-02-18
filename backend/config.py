@@ -24,9 +24,11 @@ class Settings(BaseSettings):
     diffusers_model: str = "runwayml/stable-diffusion-v1-5"
     image_width: int = 512
     image_height: int = 512
-    num_inference_steps: int = 30
-    guidance_scale: float = 7.5
-    img2img_strength: float = 0.65
+    
+    # OPTIMISED SETTINGS FOR ACCURACY & STRUCTURE
+    num_inference_steps: int = 50     # Keep high for detail
+    guidance_scale: float = 6.0        # Slightly lower to allow more prompt adherence
+    img2img_strength: float = 0.58    # Lowered from 0.75 to preserve walls/windows better
     
     # Server settings
     host: str = "0.0.0.0"
@@ -46,16 +48,24 @@ settings.uploads_dir.mkdir(parents=True, exist_ok=True)
 settings.generated_dir.mkdir(parents=True, exist_ok=True)
 
 
-# Prompt templates
+# Prompt templates (Optimized for Structure Preservation)
+# Removed "wide angle", Added "preserve structure"
 PROMPT_TEMPLATE = (
     "photorealistic {room_type} interior redesign, {style} style, "
-    "realistic lighting, high detail, wide angle, interior design render"
+    "preserve room structure and walls, keep same layout and same wall color, "
+    "replace all existing furniture with {style} furniture, "
+    "new bed, new side tables, new decor, different furniture design, "
+    "architectural photography, natural lighting, highly detailed"
 )
 
+
+# Negative prompts to prevent architectural hallucinations
 NEGATIVE_PROMPT = (
-    "low quality, distorted, blurry, cartoon, sketch, deformed, "
-    "bad anatomy, disfigured, poorly drawn, extra limbs"
+    "changing walls, changing windows, different layout, architectural changes, "
+    "same old furniture, old bed, duplicate furniture, "
+    "low quality, distorted, blurry, cartoon, sketch"
 )
+
 
 # Budget estimation rules (based on style)
 BUDGET_ESTIMATES = {

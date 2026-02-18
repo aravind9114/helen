@@ -1,0 +1,99 @@
+INTERIOR DESIGN AI ARCHITECT - CODEBASE ANALYSIS
+=================================================
+
+This document provides a technical breakdown of every significant file in the project, detailing the technology stack, concepts used, and its role in the system.
+
+BACKEND STRUCTURE (Python/FastAPI)
+==================================
+
+File: backend/main.py
+---------------------
+- Tech Stack: Python, FastAPI, Uvicorn.
+- Concepts: REST API, CORS Middleware, Static File Serving, Health Checks.
+- Role: The entry point of the application. It initializes the FastAPI app, configures Cross-Origin Resource Sharing (CORS) to allow frontend access, and mounts static directories for serving generated images and uploads. It also includes the main API router.
+
+File: backend/core/config.py
+----------------------------
+- Tech Stack: Python, Pydantic, PyTorch.
+- Concepts: Configuration Management, Environment Variables, Hardware Hardware Profiling, Singleton Pattern.
+- Role: Central configuration hub. It loads settings from environment variables (.env) but includes a critical "VRAM Detection Engine". It automatically checks torch.cuda.get_device_properties to determine if the system has <= 4.5GB VRAM, overriding settings to enable "Low VRAM Mode" automatically.
+
+File: backend/utils/memory.py
+-----------------------------
+- Tech Stack: Python, PyTorch (CUDA), Garbage Collection (gc).
+- Concepts: GPU Resource Management, VRAM Optimization, Singleton Pattern.
+- Role: The "Traffic Controller" for the GPU. It enforces a "Single Slot" policy on Low VRAM devices, ensuring only one heavy AI model (Stable Diffusion, YOLO, or SAM) runs at a time. It implements safe offloading (moving models to CPU) and cache clearing options.
+
+File: backend/providers/offline_diffusers.py
+--------------------------------------------
+- Tech Stack: Python, Diffusers (HuggingFace), PyTorch.
+- Concepts: Latent Diffusion Models, Attention Slicing, VAE Slicing, Scheduler Configuration (DPMSolverMultistepScheduler).
+- Role: The core generation engine. It loads the Stable Diffusion v1.5 model. It implements specific optimizations for 4GB VRAM cards: forcing float16 precision, enabling memory-efficient attention (xFormers), and slicing the VAE to prevent OOM during image decoding.
+
+File: backend/ai/vision/detector.py
+-----------------------------------
+- Tech Stack: Python, Ultralytics YOLOv8.
+- Concepts: Object Detection, Computer Vision, Bounding Boxes, Confidence Thresholds.
+- Role: Runs the YOLOv8 Nano model to detect furniture items (bed, sofa, table, etc.) in user images. It creates a structured JSON output of detected items to inform the planning agent. It strictly follows the "Load-Infer-Offload" pattern in Low VRAM mode.
+
+File: backend/ai/segmentation/sam_service.py
+--------------------------------------------
+- Tech Stack: Python, Ultralytics SAM (Segment Anything Model), NumPy.
+- Concepts: Semantic Segmentation, Mask Generation, CPU Offloading.
+- Role: Generates binary masks for image inpainting. Crucially, this service is hard-coded to run on the CPU (device='cpu') to strictly reserve all VRAM for the image generation model, preventing conflicts.
+
+File: backend/api/endpoints/plan.py
+-----------------------------------
+- Tech Stack: Python, FastAPI.
+- Concepts: AI Agents, Orchestration.
+- Role: The endpoint that receives the "Plan" request. It bridges the gap between the raw user request ("Make it modern") and the execution logic.
+
+File: backend/llm/agents/planner.py
+-----------------------------------
+- Tech Stack: Python, Ollama (Local LLM), JSON Parsing.
+- Concepts: Prompt Engineering, Chain-of-Thought, JSON Enforcement.
+- Role: Connects to a local LLM (running via Ollama) to interpret natural language. It converts "Remove the bed" into structured actions like {"action": "inpaint", "target": "bed", "prompt": "empty floor"}.
+
+File: backend/llm/agents/budget.py
+----------------------------------
+- Tech Stack: Python, Ollama.
+- Concepts: Financial Logic, LLM Validation.
+- Role: Uses the local LLM to verify if a generated renovation plan fits within the user's specified budget, using a lookup table of estimated costs.
+
+File: backend/services/web_suggest.py
+-------------------------------------
+- Tech Stack: Python, DuckDuckGo Search API.
+- Concepts: Web Scraping/Searching, Real-time Data Retrieval.
+- Role: Performs live web searches to find shopping links and prices for the furniture items suggested by the planner agent.
+
+FRONTEND STRUCTURE (Vanilla JS/HTML/CSS)
+========================================
+
+File: frontend/index.html
+-------------------------
+- Tech Stack: HTML5.
+- Concepts: Semantic HTML, Responsive Structure.
+- Role: The main skeleton of the UI. It defines the layout, including the sidebar controls, the main canvas area, and the tab navigation system.
+
+File: frontend/styles/modern.css / styles.css
+---------------------------------------------
+- Tech Stack: CSS3 (Variables, Flexbox, Grid).
+- Concepts: Glassmorphism, Responsive Design, Dark Mode UI.
+- Role: Handles all visual styling. Uses CSS variables for consistent theming (colors, spacing) and media queries for mobile responsiveness.
+
+File: frontend/script.js
+------------------------
+- Tech Stack: Vanilla JavaScript (ES6+).
+- Concepts: DOM Manipulation, Event Listeners, Canvas API, Fetch API (Async/Await), State Management.
+- Role: The brain of the frontend.
+  1. Handles image uploads and previews.
+  2. Manages the Canvas interaction (drawing masks, resizing).
+  3. Sends asynchronous requests to the backend API.
+  4. Updates the UI based on loading states and results.
+  5. Implements the tab switching logic.
+
+PROJECT-WIDE CONCEPTS
+=====================
+1. REST Architecture: Decoupled frontend/backend allowing for independent development.
+2. Edge AI / Local Inference: Running complex AI models entirely on consumer hardware without cloud dependency.
+3. Resource Constrained Optimization: Techniques (Quantization, Offloading, Slicing) used to fit 16GB implementations into 4GB VRAM.

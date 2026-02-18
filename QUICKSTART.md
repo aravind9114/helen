@@ -3,11 +3,10 @@
 ## Step 1: Install Backend Dependencies
 
 ```bash
-cd backend
-
+# From project root:
 # Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate  # Windows
+python -m venv backend\venv
+backend\venv\Scripts\activate  # Windows
 
 # Install all packages
 pip install -r requirements.txt
@@ -23,8 +22,9 @@ python test_setup.py
 ## Step 2: Start Backend
 
 ```bash
-# Make sure you're in backend/ directory and venv is activated
-python main.py
+# Make sure you are in the PROJECT ROOT (interior-designer-ai/)
+# and venv is activated
+python -m backend.main
 ```
 
 Backend will run at: `http://localhost:8000`
@@ -34,12 +34,14 @@ Backend will run at: `http://localhost:8000`
 ## Step 3: Start Frontend (New Terminal)
 
 ```bash
-# From project root directory
-bun install
-bun dev
+# Navigate to frontend folder
+cd frontend
+
+# Start simple web server (No installation needed!)
+python -m http.server 8080
 ```
 
-Frontend will run at: `http://localhost:3000`
+Frontend will run at: `http://localhost:8080`
 
 ## Step 4: Use the App
 

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from typing import List, Dict
-from services.logging import logger
+from backend.services.logging import logger
 
 class ReplacementEngine:
     """Rule-based furniture replacement suggestions"""

@@ -1,7 +1,7 @@
 """
 Budget estimation service using rule-based approach.
 """
-from config import BUDGET_ESTIMATES
+from backend.core.config import settings, BUDGET_ESTIMATES
 
 
 def estimate_cost(style: str) -> int:

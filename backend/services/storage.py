@@ -7,7 +7,7 @@ from pathlib import Path
 from PIL import Image
 import io
 
-from config import settings
+from backend.core.config import settings
 
 
 def save_uploaded_image(image_data: bytes, filename: str) -> Path:
@@ -100,27 +100,33 @@ def resize_image(image_path: Path, target_width: int = 512, target_height: int =
     """
     img = Image.open(image_path).convert("RGB")
     
-    # Calculate aspect ratio
-    aspect = img.width / img.height
+    # Calculate target dimensions ensuring multiples of 8
+    width, height = img.size
+    aspect = width / height
     
-    if aspect > 1:
-        # Landscape
-        new_width = target_width
-        new_height = int(target_width / aspect)
+    # Scale based on SHORTEST side to preserve resolution/details
+    # e.g. 1920x1080 -> scale 1080 to 512 -> 912x512
+    min_target = min(target_width, target_height)
+    
+    if width < height:
+        new_width = min_target
+        new_height = int(min_target / aspect)
     else:
-        # Portrait or square
-        new_height = target_height
-        new_width = int(target_height * aspect)
+        new_height = min_target
+        new_width = int(min_target * aspect)
+
+    # Cap max dimension to avoid VRAM OOM (e.g. 1536)
+    if max(new_width, new_height) > 1536:
+        scale = 1536 / max(new_width, new_height)
+        new_width = int(new_width * scale)
+        new_height = int(new_height * scale)
     
-    # Resize with high quality
+    # Ensure multiples of 8
+    new_width = (new_width // 8) * 8
+    new_height = (new_height // 8) * 8
+    
+    # Resize
     img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
     
-    # Center crop to exact dimensions if needed
-    if new_width != target_width or new_height != target_height:
-        left = (new_width - target_width) // 2
-        top = (new_height - target_height) // 2
-        right = left + target_width
-        bottom = top + target_height
-        img = img.crop((left, top, right, bottom))
-    
+    # No cropping - return exact aspect ratio sized image
     return img

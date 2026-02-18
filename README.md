@@ -53,11 +53,15 @@ This project implements an AI-powered interior design system with offline GPU ac
 11. **Budget Calculator** - Shows remaining budget after purchases
 12. **Real Shopping Links** - Direct links to Pepperfry, Urban Ladder, IKEA, Amazon, etc.
 
+### Interactive Edit Mode (NEW - SAM + Inpainting)
+
+13. **Click-to-Edit** - Select any object in the room just by clicking.
+14. **AI Inpainting** - Replace specific furniture without changing the rest of the room.
+15. **Smart Recolor** - Instantly change wall colors while preserving shadows/texture.
+16. **Mask Visualization** - See exactly what the AI selected.
+
 ### User Interface
 
-13. **Simple UI** - Clean, professional interface with tabs
-14. **Tabbed Suggestions** - Switch between Local Replacements and Online Vendors
-15. **Download Results** - Save generated images
 16. **Responsive Design** - Works on desktop and tablet
 
 ---

@@ -1,0 +1,35 @@
+# FastAPI Backend
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.20
+
+# PyTorch with CUDA support (Windows)
+# For CPU-only: torch==2.5.1 torchvision==0.20.1
+# For CUDA 12.1: Install using: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+torch>=2.5.1
+torchvision>=0.20.1
+
+# AI/ML Libraries
+diffusers==0.32.2
+transformers==4.48.3
+accelerate==1.2.1
+
+# Image Processing
+Pillow==11.0.0
+opencv-python==4.10.0.84
+
+# YOLO Detection
+ultralytics>=8.0.0
+
+# Optional: Online Providers
+replicate==1.0.7
+requests==2.32.3
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.10.5
+pydantic-settings==2.7.1
+scipy==1.15.1
+scikit-image==0.25.1
+# segment-anything removed - using ultralytics instead
+httpx>=0.27.0

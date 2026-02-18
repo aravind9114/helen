@@ -1,16 +1,14 @@
-"""
-Offline AI provider using Diffusers image-to-image pipeline.
-Runs locally with GPU acceleration when available.
-"""
 import torch
 from PIL import Image
 from pathlib import Path
 import time
+import gc
 
-from diffusers import StableDiffusionImg2ImgPipeline
-from config import settings, PROMPT_TEMPLATE, NEGATIVE_PROMPT
-from services.logging import logger
-from services.storage import resize_image, save_generated_image
+from diffusers import StableDiffusionImg2ImgPipeline, DPMSolverMultistepScheduler
+from backend.core.config import settings, PROMPT_TEMPLATE, NEGATIVE_PROMPT
+from backend.services.logging import logger
+from backend.services.storage import resize_image, save_generated_image
+from backend.utils.memory import memory_manager
 
 
 class OfflineDiffusersProvider:
@@ -18,41 +16,64 @@ class OfflineDiffusersProvider:
     
     def __init__(self):
         self.pipeline = None
-        self.device = None
+        # Determine device and dtype based on strict hardware profile
+        if torch.cuda.is_available():
+            self.device = "cuda"
+            self.dtype = torch.float16
+            logger.info(f"[SD] CUDA Mode. Using float16. Low VRAM: {settings.low_vram}")
+        else:
+            self.device = "cpu"
+            self.dtype = torch.float32
+            logger.info("[SD] CPU Mode. Using float32.")
         
     def initialize(self):
         """Initialize the Stable Diffusion pipeline (lazy loading)."""
+        # NORMAL MODE: Keep resident if already loaded
+        if not settings.low_vram and self.pipeline is not None:
+            return
+
+        # Ensure GPU slot is ours (Only if we need to load or re-load)
+        memory_manager.ensure_gpu("sd_img2img")
+        
         if self.pipeline is not None:
             return  # Already initialized
         
         logger.info("Initializing offline Diffusers provider...")
         
-        # Detect device
-        if torch.cuda.is_available():
-            self.device = "cuda"
-            logger.info(f"✓ CUDA detected: {torch.cuda.get_device_name(0)}")
-        else:
-            self.device = "cpu"
-            logger.warning("⚠ CUDA not available. Using CPU (will be slower).")
-        
-        # Load pipeline
+        # Load pipeline (RTX 4060 works great with float16)
         logger.info(f"Loading model: {settings.diffusers_model}")
-        logger.info("This may take a few minutes on first run (downloading ~4GB)...")
         
-        self.pipeline = StableDiffusionImg2ImgPipeline.from_pretrained(
-            settings.diffusers_model,
-            torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-            safety_checker=None,  # Disable for faster inference
-        )
-        
-        self.pipeline = self.pipeline.to(self.device)
-        
-        # Enable optimizations
-        if self.device == "cuda":
-            # Enable attention slicing for lower VRAM usage
-            self.pipeline.enable_attention_slicing()
-        
-        logger.info("✓ Model loaded successfully!")
+        try:
+            self.pipeline = StableDiffusionImg2ImgPipeline.from_pretrained(
+                settings.diffusers_model,
+                torch_dtype=self.dtype,
+                safety_checker=None,
+                use_safetensors=True
+            )
+            
+            # Use DPM++ 2M Karras Scheduler for better realism
+            self.pipeline.scheduler = DPMSolverMultistepScheduler.from_config(self.pipeline.scheduler.config, use_karras_sigmas=True)
+            
+            # OPTIMIZATION: 4GB VRAM Specifics
+            if self.device == "cuda":
+                self.pipeline.to("cuda")
+                self.pipeline.enable_attention_slicing()
+                self.pipeline.enable_vae_slicing()
+                # self.pipeline.enable_model_cpu_offload() # Conflict with manual management? 
+                # Better to keep it on GPU while active, then kill it.
+                if hasattr(self.pipeline, "enable_xformers_memory_efficient_attention"):
+                    try:
+                        self.pipeline.enable_xformers_memory_efficient_attention()
+                    except:
+                        pass
+            
+            memory_manager.register_model("sd_img2img", self.pipeline)
+            logger.info("✓ Model loaded successfully!")
+            
+        except Exception as e:
+            logger.error(f"Failed to load SD model: {e}")
+            raise
+
     
     def generate_prompt(self, room_type: str, style: str) -> tuple[str, str]:
         """
@@ -75,18 +96,11 @@ class OfflineDiffusersProvider:
         self,
         image_path: Path,
         room_type: str,
-        style: str
+        style: str,
+        strength: float = 0.65
     ) -> tuple[Path, float]:
         """
         Generate redesigned interior image.
-        
-        Args:
-            image_path: Path to input image
-            room_type: Type of room
-            style: Design style
-            
-        Returns:
-            Tuple of (output_image_path, time_taken_seconds)
         """
         # Initialize pipeline if needed
         self.initialize()
@@ -94,7 +108,71 @@ class OfflineDiffusersProvider:
         start_time = time.time()
         
         # Load and resize input image
-        logger.info(f"Processing image: {image_path.name}")
+        # STRICT RULE: Cap resolution for VRAM safety
+        target_size = (512, 512)
+        if not settings.low_vram and self.device == "cuda":
+            # NORMAL mode allow up to 640 if possible, but 512 is safest
+            # We stick to 512 as per "Otherwise keep 512" rule for simplicity/safety
+            pass
+            
+        input_image = Image.open(image_path).convert("RGB")
+        input_image = input_image.resize(target_size)
+        
+        prompt, negative_prompt = self.generate_prompt(room_type, style)
+        
+        # Override strength/steps based on profile
+        if settings.low_vram:
+            strength = settings.img2img_strength
+            # STRICT CAP: steps <= 20
+            num_steps = min(settings.num_inference_steps, 20)
+        else:
+            # NORMAL MODE: steps <= 30
+            num_steps = min(30, settings.num_inference_steps)
+            
+        # CPU Fallback Cap
+        if self.device == "cpu":
+            num_steps = min(num_steps, 12)
+            
+        try:
+            with torch.inference_mode():
+                output = self.pipeline(
+                    prompt=prompt,
+                    negative_prompt=negative_prompt,
+                    image=input_image,
+                    strength=strength,
+                    guidance_scale=settings.guidance_scale,
+                    num_inference_steps=num_steps
+                ).images[0]
+                
+            # Post-generation cleanup
+            if settings.low_vram:
+                # LOW_VRAM: Clean up immediately
+                torch.cuda.empty_cache()
+
+            # Save
+            output_path = save_generated_image(output, prompt)
+            
+            return output_path, time.time() - start_time
+            
+        except torch.cuda.OutOfMemoryError:
+            logger.warning("OOM Detected! Retrying with lower steps...")
+            torch.cuda.empty_cache()
+            gc.collect()
+            
+            # Retry with minimal settings
+            with torch.inference_mode():
+                output = self.pipeline(
+                    prompt=prompt,
+                    negative_prompt=negative_prompt,
+                    image=input_image,
+                    strength=strength,
+                    guidance_scale=settings.guidance_scale,
+                    num_inference_steps=15 # Safe mode
+                ).images[0]
+                
+            output_path = save_generated_image(output, prompt)
+            return output_path, time.time() - start_time
+        logger.info(f"Processing image: {image_path.name} | Strength: {strength}")
         init_image = resize_image(
             image_path,
             settings.image_width,
@@ -107,15 +185,14 @@ class OfflineDiffusersProvider:
         
         # Run inference
         logger.info("Generating image with Stable Diffusion...")
-        with torch.no_grad():
-            result = self.pipeline(
-                prompt=prompt,
-                negative_prompt=negative_prompt,
-                image=init_image,
-                strength=settings.img2img_strength,
-                num_inference_steps=settings.num_inference_steps,
-                guidance_scale=settings.guidance_scale,
-            )
+        result = self.pipeline(
+            prompt=prompt,
+            negative_prompt=negative_prompt,
+            image=init_image,
+            strength=strength,
+            num_inference_steps=settings.num_inference_steps,
+            guidance_scale=settings.guidance_scale,
+        )
         
         # Save generated image
         output_image = result.images[0]

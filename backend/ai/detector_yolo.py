@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import torch
 from pathlib import Path
-from services.logging import logger
+from backend.services.logging import logger
 
 class YOLODetector:
     """Singleton YOLO detector for furniture detection"""

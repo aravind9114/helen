@@ -1,0 +1,74 @@
+INTERIOR DESIGN AI ARCHITECT - PROJECT USER GUIDE
+=================================================
+
+1. PROJECT CONCEPT
+------------------
+The "Interior Design AI Architect" is a sophisticated web application designed to democratize interior design. Traditional interior design is expensive and time-consuming. This tool uses state-of-the-art Artificial Intelligence to allow anyone to visualize renovations of their own space in seconds, entirely for free, and with complete privacy.
+
+Unlike most AI tools that run on the cloud (and cost money per image), this project is engineered to run "locally" on your own laptop. It uses advanced mathematical optimizations to fit massive AI models into standard consumer hardware (specifically targeting 4GB VRAM laptops).
+
+2. KEY FEATURES
+---------------
+- Privacy First: Your photos never leave your computer.
+- Hardware Adaptive: Automatically detects if you have a powerful PC or a laptop and adjusts quality/speed accordingly.
+- AI Planning: Includes a "smart agent" that can read a plan ("Make it minimalist") and break it down into steps (Remove bed, Paint walls white).
+- Budget Aware: Estimates the cost of your renovation based on real-world data.
+
+3. TECHNICAL CONCEPTS USED
+--------------------------
+A. Generative AI (Stable Diffusion Concept)
+   The core engine uses a "Latent Diffusion Model". Think of this as a rigorous de-noising process. The AI has learned to reverse the process of adding static noise to an image. It starts with random noise and, guided by your text prompt ("Modern Living Room"), gradually hallucinates a clean image that matches your description.
+
+B. Semantic Segmentation (SAM)
+   To allow you to edit specific parts of the room (like just the floor), we use the "Segment Anything Model". This AI understands the "shapes" of objects. When you click a chair, it doesn't just see a pixel; it sees the entire object boundary, allowing for perfect masking.
+
+C. Object Detection (YOLO)
+   "You Only Look Once" (YOLO) is a high-speed vision model. We use it to "read" your room before you even start. It scans your uploaded photo and tags items: "Sofa at [x,y]", "TV at [x,y]". This gives our Planning Agent the context it needs to make smart suggestions.
+
+4. USER FLOW (How to Use)
+-------------------------
+Step 1: Launch
+   - Start the backend server.
+   - Open the frontend in your browser.
+
+Step 2: Upload
+   - Drag and drop a photo of your room (or use a sample).
+   - The system automatically "Scans" the room using YOLO to detect existing furniture.
+
+Step 3: Create Mode (The "Gut Renovation")
+   - Select a room type (e.g., "Bedroom") and a style (e.g., "Minimalist").
+   - Adjust the "Creativity" slider.
+     * Low (0.4): Keep the layout exactly as is, just change colors/textures.
+     * High (0.8): Move furniture around, change the structure.
+   - Click "Generate".
+   - Wait ~15-30 seconds (depending on your hardware) for the AI to dream up a new room.
+
+Step 4: Edit Mode (The "Fixer Upper")
+   - Switch to the "Edit" tab.
+   - Use the Brush or Click tool to highlight a specific ugly item (e.g., an old lamp).
+   - Type a prompt: "Modern brass floor lamp".
+   - Click "Generate". The AI will erase the old lamp and paint a new one in its place, blending the shadows perfectly.
+
+5. RUNNING THE PROJECT
+----------------------
+Prerequisites:
+- Python 3.10+ installed.
+- NVIDIA GPU with at least 4GB VRAM (recommended).
+
+Instruction A: Backend
+1. Open a terminal in the 'backend' folder.
+2. Run: `python -m venv venv`
+3. Activate: `venv\Scripts\activate` (Windows)
+4. Install: `pip install -r requirements.txt`
+5. Start: `python main.py`
+   (Wait for it to say "Application startup complete" on port 8000)
+
+Instruction B: Frontend
+1. Go to the 'frontend' folder.
+2. Simply double-click `index.html` to open it in your browser.
+   (Or run `python -m http.server 8080` for a better experience)
+
+6. TROUBLESHOOTING
+------------------
+- "CUDA Out of Memory": Your image is too large. The system auto-caps at 512x512 for 4GB cards. Restart the backend to clear memory.
+- "Backend Not Connected": Ensure the black terminal window running `main.py` is still open and hasn't crashed.

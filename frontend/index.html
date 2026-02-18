@@ -4,181 +4,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget-Constrained AI Interior Design System</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>AI Interior Design Studio</title>
+    <link rel="stylesheet" href="styles/modern.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <header>
+        <div class="header-left">
+            <h1>✨ DreamSpace AI</h1>
+        </div>
+        <div class="header-right">
+            <span class="status-badge online">System Online</span>
+        </div>
+    </header>
+
     <div class="container">
-        <header class="header">
-            <h1>🎨 AI Interior Design System</h1>
-            <p>Budget-Constrained AI-Based Interior Design Recommendation System</p>
-        </header>
-
-        <main class="main-content">
-            <!-- Error Display -->
-            <div id="error-message" class="error-message hidden"></div>
-
-            <!-- Upload Section -->
-            <section class="upload-section">
-                <h2>Upload Room Photo</h2>
-                <div id="drop-zone" class="drop-zone">
-                    <div class="drop-zone-content">
-                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17 8 12 3 7 8"></polyline>
-                            <line x1="12" y1="3" x2="12" y2="15"></line>
-                        </svg>
-                        <p>Drag & drop your room image here</p>
-                        <p class="drop-zone-hint">or click to browse</p>
-                        <input type="file" id="file-input" accept="image/*" hidden>
-                    </div>
-                    <img id="preview-image" class="preview-image hidden" alt="Uploaded room">
-                    <button id="remove-image" class="remove-btn hidden">✕</button>
+        <!-- Sidebar Controls -->
+        <aside>
+            <div class="panel controls-panel">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="create">Create</button>
+                    <button class="tab-btn" data-tab="edit">Edit</button>
+                    <button class="tab-btn" data-tab="plan">Plan</button>
                 </div>
-            </section>
 
-            <!-- Controls Section -->
-            <section class="controls-section">
-                <h2>Design Settings</h2>
-                <div class="controls-grid">
+                <!-- Create Tab -->
+                <div id="tab-create" class="tab-content active">
+                    <h2>Generate Room</h2>
                     <div class="control-group">
-                        <label for="room-type">Room Type</label>
+                        <label>Style</label>
+                        <select id="style" class="select-input">
+                            <option value="Modern">Modern</option>
+                            <option value="Minimalist">Minimalist</option>
+                            <option value="Industrial">Industrial</option>
+                            <option value="Bohemian">Bohemian</option>
+                            <option value="Scandinavian">Scandinavian</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label>Room Type</label>
+                            <span id="room-detect-badge"
+                                style="font-size: 0.8em; color: var(--accent); background: rgba(0,255,136,0.1); padding: 2px 6px; border-radius: 4px; display: none;">Detected:
+                                ?</span>
+                        </div>
                         <select id="room-type" class="select-input">
                             <option value="Living Room">Living Room</option>
                             <option value="Bedroom">Bedroom</option>
                             <option value="Kitchen">Kitchen</option>
-                            <option value="Bathroom">Bathroom</option>
                             <option value="Office">Office</option>
-                            <option value="Dining Room">Dining Room</option>
                         </select>
                     </div>
-
                     <div class="control-group">
-                        <label for="style">Design Style</label>
-                        <select id="style" class="select-input">
-                            <option value="Minimalist">Minimalist</option>
-                            <option value="Modern">Modern</option>
-                            <option value="Vintage">Vintage</option>
-                            <option value="Professional">Professional</option>
-                        </select>
+                        <label>Budget ($)</label>
+                        <input type="number" id="budget" value="5000" min="1000" step="500">
                     </div>
-
                     <div class="control-group">
-                        <label for="provider">AI Provider</label>
+                        <label>AI Provider</label>
                         <select id="provider" class="select-input">
                             <option value="offline">Offline (Local GPU)</option>
-                            <option value="replicate">Replicate (Online)</option>
-                            <option value="hf">HuggingFace (Online)</option>
+                            <option value="replicate">Replicate Cloud</option>
                         </select>
                     </div>
 
                     <div class="control-group">
-                        <label for="budget">Budget (₹)</label>
-                        <input type="number" id="budget" class="number-input" value="200000" min="0" step="10000">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label>Creativity Level</label>
+                            <span id="strength-value"
+                                style="font-size: 0.9em; font-weight: bold; color: #4CAF50;">55%</span>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; font-size: 0.8em; color: #888; margin-bottom: 5px;">
+                            <span>Subtle (Keep Layout)</span>
+                            <span>Wild (Remodel)</span>
+                        </div>
+                        <input type="range" id="strength" min="0.3" max="0.9" step="0.05" value="0.55"
+                            style="width: 100%; accent-color: #4CAF50;">
                     </div>
+                    <button id="generate-btn" class="primary-btn">
+                        <span>🚀 Generate Design</span>
+                    </button>
                 </div>
 
-                <button id="generate-btn" class="generate-btn" disabled>
-                    <span id="btn-text">Generate Design</span>
-                    <span id="btn-loader" class="loader hidden"></span>
-                </button>
-
-                <button id="detect-btn" class="detect-btn" disabled>
-                    <span id="detect-text">🔍 Re-Design (Detect Furniture)</span>
-                    <span id="detect-loader" class="loader hidden"></span>
-                </button>
-            </section>
-
-
-            <!-- Results Section -->
-            <section class="results-section">
-                <div class="results-grid">
-                    <!-- Original Image -->
-                    <div class="result-panel">
-                        <h3>Original Photo</h3>
-                        <div id="original-display" class="image-display empty">
-                            <p>Upload an image to begin</p>
+                <!-- Edit Tab -->
+                <div id="tab-edit" class="tab-content hidden">
+                    <div id="scan-section">
+                        <h2>Analysis</h2>
+                        <button id="scan-btn" class="secondary-btn" style="width: 100%; margin-bottom: 20px;">
+                            <span>🔍 Scan for Products</span>
+                        </button>
+                        <div id="scan-results" class="hidden"
+                            style="margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
+                            <!-- Results injected here -->
                         </div>
                     </div>
 
-                    <!-- Generated Image -->
-                    <div class="result-panel">
-                        <h3>AI Design</h3>
-                        <div id="generated-display" class="image-display empty">
-                            <p>Your design will appear here</p>
-                            <div id="loading-state" class="loading-state hidden">
-                                <div class="spinner"></div>
-                                <p>Generating your design...</p>
+                    <!-- Refine Details Removed -->
+
+                    <div class="control-group">
+                        <label>Action</label>
+                        <select id="edit-action" class="select-input">
+                            <option value="wall">Paint Wall</option>
+                            <!-- 
+                            <option value="repaint">Repaint Object</option>
+                            <option value="inpaint">Replace Object</option>
+                            <option value="remove">Remove Object</option> 
+                            -->
+                        </select>
+                    </div>
+
+                    <div id="edit-prompt-group" class="control-group">
+                        <label>Description</label>
+                        <input type="text" id="edit-prompt" placeholder="e.g. Leather sofa">
+                    </div>
+
+                    <div id="edit-color-group" class="control-group hidden">
+                        <label>Color</label>
+                        <input type="color" id="edit-color" value="#ffffff">
+                    </div>
+
+                    <button id="apply-edit-btn" class="primary-btn" disabled>
+                        <span>✨ Apply Changes</span>
+                    </button>
+                </div>
+
+                <!-- Plan Tab (LLM) -->
+                <div id="tab-plan" class="tab-content hidden">
+                    <h2>AI Designer Agent</h2>
+                    <div class="chat-interface">
+                        <div id="chat-log" class="chat-log">
+                            <div class="message ai">
+                                Hello! Tell me how you want to transform this room. I'll create a plan for you.
                             </div>
-                            <img id="generated-image" class="generated-image hidden" alt="Generated design">
-                            <button id="download-btn" class="download-btn hidden">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                Download
-                            </button>
                         </div>
+                        <div class="chat-input-area">
+                            <textarea id="plan-input"
+                                placeholder="e.g. Make this room modern and remove the bed..."></textarea>
+                            <button id="plan-btn" class="secondary-btn">Send</button>
+                        </div>
+                        <!-- Execute Plan Button Removed as per strict requirements -->
                     </div>
                 </div>
+            </div>
 
-                <!-- Info Cards -->
-                <div id="info-cards" class="info-cards hidden">
-                    <div class="info-card budget-card">
-                        <h4>💰 Budget Status</h4>
-                        <div class="budget-details">
-                            <p>Estimated Cost: <span id="estimated-cost">-</span></p>
-                            <p>Your Budget: <span id="your-budget">-</span></p>
-                            <span id="budget-badge" class="badge">-</span>
-                        </div>
-                    </div>
-
-                    <div class="info-card provider-card">
-                        <h4>⚡ Generation Info</h4>
-                        <div class="provider-details">
-                            <p>Provider: <span id="provider-used">-</span></p>
-                            <p>Time Taken: <span id="time-taken">-</span></p>
-                        </div>
-                    </div>
+            <!-- History Panel -->
+            <div class="panel history-panel">
+                <h2>Session History</h2>
+                <div id="history-list" class="history-list">
+                    <!-- History items injected here -->
+                    <p class="empty-text">No previous sessions</p>
                 </div>
+            </div>
+        </aside>
 
-                <!-- Detection Results -->
-                <div id="detection-results" class="detection-results hidden">
-                    <h3>🔍 Detected Furniture</h3>
-                    <div id="detections-list" class="detections-list"></div>
-
-                    <!-- Tabs -->
-                    <div class="suggestion-tabs">
-                        <button id="tab-local" class="tab-btn active">📦 Local Replacements</button>
-                        <button id="tab-online" class="tab-btn">🌐 Online Suggestions</button>
-                    </div>
-
-                    <!-- Local Suggestions -->
-                    <div id="local-suggestions" class="suggestions-container">
-                        <h3>💡 Suggested Replacements (Local Catalog)</h3>
-                        <div id="suggestions-list" class="suggestions-list"></div>
-                    </div>
-
-                    <!-- Online Suggestions -->
-                    <div id="online-suggestions" class="suggestions-container hidden">
-                        <h3>🛒 Online Vendor Suggestions</h3>
-                        <p class="disclaimer">⚠️ Prices are approximate; verify on vendor website before purchase.</p>
-                        <div id="online-suggestions-list" class="online-suggestions-list"></div>
-                    </div>
-
-                    <div class="budget-remaining">
-                        <p>Remaining Budget: <span id="remaining-budget">₹0</span></p>
-                    </div>
+        <!-- Main Canvas -->
+        <main>
+            <div class="canvas-container">
+                <div id="upload-placeholder" class="upload-placeholder">
+                    <div class="icon">📁</div>
+                    <h3>Drop your room image here</h3>
+                    <p>or click to browse</p>
+                    <input type="file" id="file-input" hidden accept="image/*">
                 </div>
-            </section>
+                <img id="main-image" class="hidden" src="" alt="Room Design">
+                <canvas id="mask-canvas" class="hidden"></canvas>
 
+                <div id="loader" class="loader-overlay hidden">
+                    <div class="spinner"></div>
+                    <p id="loader-text">AI is thinking...</p>
+                </div>
+            </div>
+
+            <!-- Budget Breakdown -->
+            <div id="budget-breakdown" class="panel budget-panel hidden">
+                <h2>💰 Cost Estimation</h2>
+                <div id="cost-details"></div>
+                <div class="total-row">
+                    <span>Total Estimated Cost:</span>
+                    <span id="total-cost">$0</span>
+                </div>
+            </div>
         </main>
-
-        <footer class="footer">
-            <p>MSc Interior Design AI System | GPU-Accelerated Offline Generation</p>
-        </footer>
     </div>
 
     <script src="script.js"></script>

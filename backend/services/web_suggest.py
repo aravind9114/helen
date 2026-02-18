@@ -9,7 +9,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 from ddgs import DDGS
-from services.logging import logger
+from backend.services.logging import logger
 
 
 class WebSuggest:
@@ -112,12 +112,13 @@ class WebSuggest:
         results = []
         
         try:
-            # Build multiple search query variations (try until we get results)
+            # Build multiple search query variations (prioritizing requested vendors)
             queries = [
-                f"{category} buy online india",
-                f"buy {category} india furniture",
-                f"{category} furniture online shopping india",
-                f"best {category} price india"
+                f"{category} amazon india",
+                f"{category} flipkart furniture",
+                f"{category} ikea india",
+                f"{category} damro india",
+                f"buy {category} online amazon flipkart"
             ]
             
             # Use DuckDuckGo search
@@ -155,7 +156,7 @@ class WebSuggest:
                             
                             results.append({
                                 "title": result.get('title', 'No title'),
-                                "url": result['href'],
+                                "link": result['href'],
                                 "snippet": snippet[:200] if snippet else "No description available",
                                 "source": "duckduckgo",
                                 "domain": domain,

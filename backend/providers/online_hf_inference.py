@@ -8,9 +8,9 @@ import requests
 from PIL import Image
 import io
 
-from config import settings, PROMPT_TEMPLATE, NEGATIVE_PROMPT
-from services.logging import logger
-from services.storage import save_generated_image
+from backend.core.config import settings, PROMPT_TEMPLATE, NEGATIVE_PROMPT
+from backend.services.logging import logger
+from backend.services.storage import save_generated_image
 
 
 class HuggingFaceProvider:

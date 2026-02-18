@@ -6,9 +6,9 @@ import time
 from pathlib import Path
 import base64
 
-from config import settings
-from services.logging import logger
-from services.storage import save_generated_image
+from backend.core.config import settings
+from backend.services.logging import logger
+from backend.services.storage import save_generated_image
 
 try:
     import replicate

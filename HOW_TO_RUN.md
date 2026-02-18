@@ -108,14 +108,14 @@ You need **TWO terminals** - one for backend, one for frontend.
 ### Terminal 1: Start Backend
 
 ```bash
-# Navigate to backend
-cd C:\Users\[YourName]\Desktop\interior-designer-ai\backend
+# Navigate to the PROJECT ROOT (NOT backend!)
+cd C:\Users\[YourName]\Desktop\helentest\interior-designer-ai
 
 # Activate virtual environment
 venv\Scripts\activate
 
-# Start the backend server
-python main.py
+# Start the backend server (as a module)
+python -m backend.main
 ```
 
 **Expected output:**
