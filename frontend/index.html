@@ -4,191 +4,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Interior Design Studio</title>
+    <title>HELEN'S INTERIOR DESIGN | Intelligent Design</title>
     <link rel="stylesheet" href="styles/modern.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (lightweight) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
+
+    <!-- 1. Header -->
     <header>
-        <div class="header-left">
-            <h1>✨ DreamSpace AI</h1>
+        <div class="logo-section">
+            <div class="logo-icon">✨</div>
+            <div>
+                <span class="app-title">HELEN'S INTERIOR DESIGN</span>
+            </div>
         </div>
-        <div class="header-right">
-            <span class="status-badge online">System Online</span>
+        <div class="header-status">
+            <div class="status-pill offline" id="system-status">
+                <div class="status-dot"></div>
+                <span id="status-text">Connecting...</span>
+            </div>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Sidebar Controls -->
-        <aside>
-            <div class="panel controls-panel">
-                <div class="tabs">
-                    <button class="tab-btn active" data-tab="create">Create</button>
-                    <button class="tab-btn" data-tab="edit">Edit</button>
-                    <button class="tab-btn" data-tab="plan">Plan</button>
+    <!-- 2. Main App Area -->
+    <div id="app-root">
+
+        <!-- LEFT: Control Sidebar -->
+        <aside class="sidebar">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="create">Design</button>
+                <button class="tab-btn" data-tab="edit">Edit Details</button>
+                <button class="tab-btn" data-tab="plan">Planning</button>
+            </div>
+
+            <!-- Create / Generate Panel -->
+            <div id="tab-create" class="panel-content active">
+                <div class="panel-section">
+                    <div id="upload-zone">
+                        <span class="upload-icon">📷</span>
+                        <p style="font-weight: 500;">Click to Upload Room</p>
+                        <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">JPG, PNG up to 10MB</p>
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                    </div>
                 </div>
 
-                <!-- Create Tab -->
-                <div id="tab-create" class="tab-content active">
-                    <h2>Generate Room</h2>
-                    <div class="control-group">
-                        <label>Style</label>
-                        <select id="style" class="select-input">
-                            <option value="Modern">Modern</option>
-                            <option value="Minimalist">Minimalist</option>
-                            <option value="Industrial">Industrial</option>
-                            <option value="Bohemian">Bohemian</option>
+                <div class="panel-section">
+                    <label>Design Style</label>
+                    <div class="input-wrapper">
+                        <select id="style">
+                            <option value="Modern">Modern Minimalist</option>
+                            <option value="Industrial">Industrial Loft</option>
+                            <option value="Bohemian">Bohemian Chic</option>
                             <option value="Scandinavian">Scandinavian</option>
+                            <option value="Luxury">Modern Luxury</option>
+                            <option value="Cyberpunk">Neo-Cyberpunk</option>
                         </select>
                     </div>
-                    <div class="control-group">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <label>Room Type</label>
-                            <span id="room-detect-badge"
-                                style="font-size: 0.8em; color: var(--accent); background: rgba(0,255,136,0.1); padding: 2px 6px; border-radius: 4px; display: none;">Detected:
-                                ?</span>
-                        </div>
-                        <select id="room-type" class="select-input">
+
+                    <label>Room Function</label>
+                    <div class="input-wrapper">
+                        <select id="room-type">
                             <option value="Living Room">Living Room</option>
-                            <option value="Bedroom">Bedroom</option>
-                            <option value="Kitchen">Kitchen</option>
-                            <option value="Office">Office</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label>Budget ($)</label>
-                        <input type="number" id="budget" value="5000" min="1000" step="500">
-                    </div>
-                    <div class="control-group">
-                        <label>AI Provider</label>
-                        <select id="provider" class="select-input">
-                            <option value="offline">Offline (Local GPU)</option>
-                            <option value="replicate">Replicate Cloud</option>
+                            <option value="Bedroom">Master Bedroom</option>
+                            <option value="Kitchen">Kitchen & Dining</option>
+                            <option value="Office">Home Office</option>
                         </select>
                     </div>
 
-                    <div class="control-group">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <label>Creativity Level</label>
-                            <span id="strength-value"
-                                style="font-size: 0.9em; font-weight: bold; color: #4CAF50;">55%</span>
-                        </div>
-                        <div
-                            style="display: flex; justify-content: space-between; font-size: 0.8em; color: #888; margin-bottom: 5px;">
-                            <span>Subtle (Keep Layout)</span>
-                            <span>Wild (Remodel)</span>
-                        </div>
-                        <input type="range" id="strength" min="0.3" max="0.9" step="0.05" value="0.55"
-                            style="width: 100%; accent-color: #4CAF50;">
+                    <label>AI Creativity (Transformation Strength)</label>
+                    <div class="range-wrap">
+                        <input type="range" id="strength" min="0.3" max="0.9" step="0.05" value="0.55">
+                        <span id="strength-value" class="range-val">55%</span>
                     </div>
-                    <button id="generate-btn" class="primary-btn">
-                        <span>🚀 Generate Design</span>
-                    </button>
+                    <p style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">
+                        Lower = Keep structure. Higher = Remodel.
+                    </p>
+
+                    <label>Budget Constraint ($)</label>
+                    <input type="number" id="budget" value="5000" min="500">
+
+                    <label>Processing Unit</label>
+                    <select id="provider">
+                        <option value="offline">Local GPU (Privacy)</option>
+                        <option value="replicate">Cloud Cluster (High Speed)</option>
+                    </select>
                 </div>
 
-                <!-- Edit Tab -->
-                <div id="tab-edit" class="tab-content hidden">
-                    <div id="scan-section">
-                        <h2>Analysis</h2>
-                        <button id="scan-btn" class="secondary-btn" style="width: 100%; margin-bottom: 20px;">
-                            <span>🔍 Scan for Products</span>
+                <button id="generate-btn" class="btn btn-primary" disabled>
+                    <i data-lucide="sparkles"></i> Generate Design
+                </button>
+            </div>
+
+            <!-- Edit Panel -->
+            <div id="tab-edit" class="panel-content hidden">
+                <div class="panel-section">
+                    <h3 style="font-size: 16px; margin-bottom: 15px; color: var(--accent);">🖌️ Smart Wall Repaint</h3>
+
+                    <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 20px;">
+                        Click anywhere on a wall to select it, then choose a color below.
+                    </p>
+
+                    <label>Choose Wall Color</label>
+                    <div class="input-wrapper">
+                        <input type="color" id="edit-color" value="#e2e8f0"
+                            style="height: 50px; padding: 2px; cursor: pointer;">
+                    </div>
+
+                    <!-- Hidden fields for compatibility -->
+                    <input type="hidden" id="edit-action" value="wall">
+                    <div class="hidden">
+                        <input type="range" id="brush-size" value="30">
+                        <input type="text" id="edit-prompt" value="">
+                    </div>
+
+                    <div class="panel-section" style="margin-top: 20px;">
+                        <button id="apply-edit-btn" class="btn btn-primary" disabled>
+                            <i data-lucide="check"></i> Apply Paint
                         </button>
-                        <div id="scan-results" class="hidden"
-                            style="margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
-                            <!-- Results injected here -->
-                        </div>
+                        <button id="clear-mask-btn" class="btn btn-secondary" style="margin-top: 8px;">
+                            Clear Selection
+                        </button>
                     </div>
-
-                    <!-- Refine Details Removed -->
-
-                    <div class="control-group">
-                        <label>Action</label>
-                        <select id="edit-action" class="select-input">
-                            <option value="wall">Paint Wall</option>
-                            <!-- 
-                            <option value="repaint">Repaint Object</option>
-                            <option value="inpaint">Replace Object</option>
-                            <option value="remove">Remove Object</option> 
-                            -->
-                        </select>
-                    </div>
-
-                    <div id="edit-prompt-group" class="control-group">
-                        <label>Description</label>
-                        <input type="text" id="edit-prompt" placeholder="e.g. Leather sofa">
-                    </div>
-
-                    <div id="edit-color-group" class="control-group hidden">
-                        <label>Color</label>
-                        <input type="color" id="edit-color" value="#ffffff">
-                    </div>
-
-                    <button id="apply-edit-btn" class="primary-btn" disabled>
-                        <span>✨ Apply Changes</span>
-                    </button>
                 </div>
 
-                <!-- Plan Tab (LLM) -->
-                <div id="tab-plan" class="tab-content hidden">
-                    <h2>AI Designer Agent</h2>
-                    <div class="chat-interface">
-                        <div id="chat-log" class="chat-log">
-                            <div class="message ai">
-                                Hello! Tell me how you want to transform this room. I'll create a plan for you.
-                            </div>
-                        </div>
-                        <div class="chat-input-area">
-                            <textarea id="plan-input"
-                                placeholder="e.g. Make this room modern and remove the bed..."></textarea>
-                            <button id="plan-btn" class="secondary-btn">Send</button>
-                        </div>
-                        <!-- Execute Plan Button Removed as per strict requirements -->
-                    </div>
+                <!-- Product Scanner Button (preserved) -->
+                <div class="panel-section">
+                    <button id="scan-btn" class="btn btn-secondary">
+                        <i data-lucide="scan-line"></i> Scan Products
+                    </button>
+                    <div id="scan-results" class="hidden" style="margin-top: 10px;"></div>
                 </div>
             </div>
 
-            <!-- History Panel -->
-            <div class="panel history-panel">
-                <h2>Session History</h2>
-                <div id="history-list" class="history-list">
-                    <!-- History items injected here -->
-                    <p class="empty-text">No previous sessions</p>
+            <!-- Planning Panel -->
+            <div id="tab-plan" class="panel-content hidden">
+                <div class="panel-section">
+                    <label>Design Goals</label>
+                    <input type="text" id="plan-input" placeholder="e.g. Make it cozy for reading...">
+                    <button id="plan-btn" class="btn btn-primary">Create Plan</button>
+                </div>
+                <div id="chat-log" style="overflow-y: auto; max-height: 400px; font-size: 12px; line-height: 1.5;">
                 </div>
             </div>
         </aside>
 
-        <!-- Main Canvas -->
-        <main>
-            <div class="canvas-container">
-                <div id="upload-placeholder" class="upload-placeholder">
-                    <div class="icon">📁</div>
-                    <h3>Drop your room image here</h3>
-                    <p>or click to browse</p>
-                    <input type="file" id="file-input" hidden accept="image/*">
-                </div>
-                <img id="main-image" class="hidden" src="" alt="Room Design">
-                <canvas id="mask-canvas" class="hidden"></canvas>
+        <!-- CENTER: Canvas Area -->
+        <main class="canvas-area">
 
-                <div id="loader" class="loader-overlay hidden">
-                    <div class="spinner"></div>
-                    <p id="loader-text">AI is thinking...</p>
-                </div>
+            <!-- AI Loader Overlay -->
+            <div id="loader" class="ai-loader">
+                <div class="spinner"></div>
+                <div class="loader-msg" id="loader-text">Initializing Neural Engine...</div>
             </div>
 
-            <!-- Budget Breakdown -->
-            <div id="budget-breakdown" class="panel budget-panel hidden">
-                <h2>💰 Cost Estimation</h2>
-                <div id="cost-details"></div>
-                <div class="total-row">
-                    <span>Total Estimated Cost:</span>
-                    <span id="total-cost">$0</span>
+            <div class="canvas-wrapper" id="main-canvas-container">
+                <!-- Placeholder when empty -->
+                <div id="upload-placeholder" style="padding: 40px; text-align: center; color: var(--text-dim);">
+                    <i data-lucide="image" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                    <p style="margin-top: 10px;">No image loaded</p>
                 </div>
+
+                <!-- The Images -->
+                <img id="main-image" src="" alt="Main View" class="hidden">
+                <canvas id="mask-canvas" class="hidden"
+                    style="position: absolute; top: 0; left: 0; opacity: 0.6;"></canvas>
             </div>
+
+            <!-- Comparison Toggle (Optional, can be implemented via JS logic if desire) -->
+            <div class="compare-handle hidden" id="compare-toggle">Hold Space to Compare</div>
         </main>
+
+        <!-- RIGHT: Info Sidebar -->
+        <aside class="right-panel">
+            <div class="card">
+                <div class="card-header">Project Budget</div>
+                <div class="budget-total" id="budget-display">₹0</div>
+                <div class="budget-bar-bg">
+                    <div class="budget-bar-fill" id="budget-bar" style="width: 0%;"></div>
+                </div>
+                <div class="budget-status">
+                    <span id="budget-status-text">Within Budget</span>
+                    <span id="budget-percent">0%</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Session History</div>
+                <div id="history-list"
+                    style="max-height: 200px; overflow-y: auto; font-size: 12px; color: var(--text-muted);">
+                    <!-- History items injected here -->
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: auto;">
+                <div class="card-header">System Info</div>
+                <p style="font-size: 11px; color: var(--text-dim);">
+                    Render Engine: <span id="engine-name">Standard</span><br>
+                    Latency: <span id="latency">-</span>
+                </p>
+            </div>
+        </aside>
+
     </div>
 
     <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>

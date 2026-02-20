@@ -12,212 +12,158 @@ class VendorLinks:
     VENDOR_DIRECTORY = {
         "sofa": [
             {
-                "title": "Sofas at Pepperfry - Buy 2 & 3 Seater Sofas Online",
-                "link": "https://www.pepperfry.com/furniture/sofas.html",
-                "snippet": "Shop from wide range of sofas online. Choose from 2-seater, 3-seater, L-shaped sofas. Prices starting from ₹15,000. Fast delivery across India.",
-                "domain": "pepperfry.com",
-                "approx_price": 15000,
-                "vendor": "Pepperfry"
+                "title": "Flipkart Furniture - Sofas & Recliners",
+                "link": "https://www.flipkart.com/furniture/sofas/pr?sid=wwe,c3z",
+                "snippet": "Shop for Sofas online at best prices in India. 3 Seater, L Shape, Fabric & Leather Sofas. Minimum 50% Off.",
+                "domain": "flipkart.com",
+                "approx_price": 14999,
+                "vendor": "Flipkart"
             },
             {
-                "title": "Urban Ladder Sofas - Modern & Classic Designs",
-                "link": "https://www.urbanladder.com/sofas",
-                "snippet": "Premium sofas with express delivery. Choose fabric, leather, or velvet sofas. Starting at ₹18,999. Free assembly included.",
-                "domain": "urbanladder.com",
-                "approx_price": 18999,
-                "vendor": "Urban Ladder"
-            },
-            {
-                "title": "IKEA India Sofas - Scandinavian Style",
-                "link": "https://www.ikea.com/in/en/cat/sofas-fu003/",
-                "snippet": "Explore IKEA's range of sofas & couches. Modern designs with comfort. Prices from ₹19,990. Visit store or order online.",
-                "domain": "ikea.com",
-                "approx_price": 19990,
-                "vendor": "IKEA"
-            },
-            {
-                "title": "Amazon India Sofas - Best Deals & Offers",
-                "link": "https://www.amazon.in/s?k=sofa+set+for+living+room",
-                "snippet": "Buy sofa sets online at best prices. Free shipping available. Choose from 1000+ options. Starting ₹12,999 with EMI options.",
+                "title": "Amazon.in: Sofa Sets",
+                "link": "https://www.amazon.in/sofa-set/s?k=sofa+set",
+                "snippet": "Explore a wide range of Sofa Sets at Amazon.in. Great designs, durable materials, and affordable prices.",
                 "domain": "amazon.in",
                 "approx_price": 12999,
                 "vendor": "Amazon"
             },
             {
-                "title": "Furniture Online - L-Shape & Sectional Sofas",
-                "link": "https://www.furnitureonline.in/sofas",
-                "snippet": "Premium L-shape sofas with modern fabrics. Customization available. Prices range ₹25,000 - ₹75,000. Pan-India delivery.",
-                "domain": "furnitureonline.in",
-                "approx_price": 25000,
-                "vendor": "Furniture Online"
+                "title": "Damro Sofas - Living Room Furniture",
+                "link": "https://www.damroindia.com/living-room/sofas.html",
+                "snippet": "Damro Sofas. Modern, Classic & Contemporary Designs. High quality fabric and leather sofas.",
+                "domain": "damroindia.com",
+                "approx_price": 22000,
+                "vendor": "Damro"
+            },
+            {
+                "title": "Pepperfry Sofas - Buy 2 & 3 Seater Sofas Online",
+                "link": "https://www.pepperfry.com/furniture/sofas.html",
+                "snippet": "Shop from wide range of sofas online. Choose from 2-seater, 3-seater, L-shaped sofas. Prices starting from ₹15,000.",
+                "domain": "pepperfry.com",
+                "approx_price": 15000,
+                "vendor": "Pepperfry"
+            },
+            {
+                "title": "IKEA India Sofas - Scandinavian Style",
+                "link": "https://www.ikea.com/in/en/cat/sofas-fu003/",
+                "snippet": "Explore IKEA's range of sofas & couches. Modern designs with comfort. Prices from ₹19,990.",
+                "domain": "ikea.com",
+                "approx_price": 19990,
+                "vendor": "IKEA"
             }
         ],
         "bed": [
             {
-                "title": "Beds at Pepperfry - King, Queen & Single Beds",
-                "link": "https://www.pepperfry.com/furniture/beds.html",
-                "snippet": "Buy beds online in India. Choose from wooden, metal, upholstered beds. Starting ₹8,999. Storage beds available.",
-                "domain": "pepperfry.com",
-                "approx_price": 8999,
-                "vendor": "Pepperfry"
+                "title": "Flipkart Beds - King, Queen & Single",
+                "link": "https://www.flipkart.com/furniture/beds/pr?sid=wwe,7p7",
+                "snippet": "Buy Beds Online in India. Solid Wood, Metal, & Upholstered Beds. Free Delivery & Assembly.",
+                "domain": "flipkart.com",
+                "approx_price": 11999,
+                "vendor": "Flipkart"
             },
             {
-                "title": "Urban Ladder Beds - King & Queen Size",
-                "link": "https://www.urbanladder.com/beds",
-                "snippet": "Premium beds with storage options. Solid wood & engineered wood. Prices from ₹14,999. Free delivery.",
-                "domain": "urbanladder.com",
-                "approx_price": 14999,
-                "vendor": "Urban Ladder"
-            },
-            {
-                "title": "IKEA Beds - Comfortable Sleep Solutions",
-                "link": "https://www.ikea.com/in/en/cat/beds-bm003/",
-                "snippet": "Explore IKEA bed frames & mattresses. Single to king size. Starting ₹12,990. Durable and stylish designs.",
-                "domain": "ikea.com",
-                "approx_price": 12990,
-                "vendor": "IKEA"
-            },
-            {
-                "title": "Amazon India Beds - Best Prices Online",
-                "link": "https://www.amazon.in/s?k=bed+king+size",
-                "snippet": "Shop king & queen size beds. Wooden, metal, hydraulic storage beds. From ₹9,999. Fast delivery available.",
+                "title": "Amazon.in: Beds & Bed Frames",
+                "link": "https://www.amazon.in/gp/browse.html?node=1380036031",
+                "snippet": "Find the perfect bed for your bedroom. Storage beds, platform beds, bunk beds at Amazon.in.",
                 "domain": "amazon.in",
-                "approx_price": 9999,
+                "approx_price": 10500,
                 "vendor": "Amazon"
+            },
+            {
+                "title": "Damro Beds - Bedroom Furniture",
+                "link": "https://www.damroindia.com/bedroom/beds.html",
+                "snippet": "Damro Beds. Wooden cots, storage beds, luxury beds. Durable and stylish.",
+                "domain": "damroindia.com",
+                "approx_price": 18000,
+                "vendor": "Damro"
             },
             {
                 "title": "WoodenStreet Beds - Solid Wood Collection",
                 "link": "https://www.woodenstreet.com/beds",
-                "snippet": "Handcrafted wooden beds in sheesham & mango wood. King size beds from ₹19,999. Customization available.",
+                "snippet": "Handcrafted wooden beds in sheesham & mango wood. King size beds from ₹19,999.",
                 "domain": "woodenstreet.com",
                 "approx_price": 19999,
                 "vendor": "WoodenStreet"
             }
         ],
         "table": [
-            {
-                "title": "Dining Tables at Pepperfry - 4 & 6 Seater",
-                "link": "https://www.pepperfry.com/furniture/dining-tables.html",
-                "snippet": "Buy dining tables online. 4-seater, 6-seater, extendable tables. Starting ₹7,999. Glass, wood, marble options.",
-                "domain": "pepperfry.com",
-                "approx_price": 7999,
-                "vendor": "Pepperfry"
+             {
+                "title": "Flipkart Dining Tables",
+                "link": "https://www.flipkart.com/furniture/dining-tables-sets/pr?sid=wwe,ur9",
+                "snippet": "Dining Table Sets - Buy 4 Seater, 6 Seater & 8 Seater Dining Tables Online at Best Prices.",
+                "domain": "flipkart.com",
+                "approx_price": 15999,
+                "vendor": "Flipkart"
             },
             {
-                "title": "Urban Ladder Dining Tables - Modern Designs",
-                "link": "https://www.urbanladder.com/dining-tables",
-                "snippet": "Premium dining tables with chairs. 4 to 8 seater options. From ₹11,999. Free assembly included.",
-                "domain": "urbanladder.com",
-                "approx_price": 11999,
-                "vendor": "Urban Ladder"
-            },
-            {
-                "title": "IKEA Dining Tables - Scandinavian Style",
-                "link": "https://www.ikea.com/in/en/cat/dining-tables-21825/",
-                "snippet": "Extendable & fixed dining tables. Seats 2-8 people. Starting ₹9,990. Durable materials.",
-                "domain": "ikea.com",
-                "approx_price": 9990,
-                "vendor": "IKEA"
-            },
-            {
-                "title": "Amazon Dining Tables - Top Rated Collections",
-                "link": "https://www.amazon.in/s?k=dining+table+6+seater",
-                "snippet": "6-seater dining table sets with chairs. Wooden, glass top options. From ₹8,999 with free delivery.",
+                "title": "Amazon.in: Dining Tables",
+                "link": "https://www.amazon.in/Dining-Tables/b?ie=UTF8&node=1380046031",
+                "snippet": "Shop for Dining Tables at Amazon.in. Glass, Wood, Marble tops available.",
                 "domain": "amazon.in",
-                "approx_price": 8999,
+                "approx_price": 12999,
                 "vendor": "Amazon"
             },
             {
-                "title": "WoodenStreet Dining Tables - Sheesham Wood",
-                "link": "https://www.woodenstreet.com/dining-tables",
-                "snippet": "Handcrafted wooden dining tables. 4, 6, 8 seater options. Premium sheesham wood. From ₹15,999.",
-                "domain": "woodenstreet.com",
-                "approx_price": 15999,
-                "vendor": "WoodenStreet"
+                "title": "Damro Dining Tables",
+                "link": "https://www.damroindia.com/dining-room/dining-tables.html",
+                "snippet": "Damro Dining Tables. Elegant designs for your dining room. 4 and 6 seater options.",
+                "domain": "damroindia.com",
+                "approx_price": 25000,
+                "vendor": "Damro"
             }
         ],
         "chair": [
             {
-                "title": "Chairs at Pepperfry - Office & Dining Chairs",
-                "link": "https://www.pepperfry.com/furniture/chairs.html",
-                "snippet": "Buy chairs online. Office chairs, dining chairs, accent chairs. Starting ₹2,999. Ergonomic designs available.",
-                "domain": "pepperfry.com",
-                "approx_price": 2999,
-                "vendor": "Pepperfry"
-            },
-            {
-                "title": "Urban Ladder Chairs - Ergonomic & Stylish",
-                "link": "https://www.urbanladder.com/chairs",
-                "snippet": "Premium office & dining chairs. Mesh back, cushioned, wooden designs. From ₹3,999. 1-year warranty.",
-                "domain": "urbanladder.com",
-                "approx_price": 3999,
-                "vendor": "Urban Ladder"
-            },
-            {
-                "title": "IKEA Office Chairs - Work From Home",
-                "link": "https://www.ikea.com/in/en/cat/office-chairs-20652/",
-                "snippet": "Ergonomic office chairs for home & office. Adjustable height, lumbar support. Starting ₹4,990.",
-                "domain": "ikea.com",
-                "approx_price": 4990,
-                "vendor": "IKEA"
-            },
-            {
-                "title": "Amazon Office Chairs - Best Sellers",
-                "link": "https://www.amazon.in/s?k=office+chair",
-                "snippet": "Top-rated office chairs with lumbar support. Mesh, leather options. From ₹2,499 with fast delivery.",
-                "domain": "amazon.in",
-                "approx_price": 2499,
-                "vendor": "Amazon"
-            },
-            {
-                "title": "Featherlite Chairs - Premium Office Seating",
-                "link": "https://www.featherliteonline.com/office-chairs",
-                "snippet": "Professional ergonomic chairs. Used in offices across India. Starting ₹5,999. 3-year warranty.",
-                "domain": "featherliteonline.com",
-                "approx_price": 5999,
-                "vendor": "Featherlite"
-            }
-        ],
-        "tv": [
-            {
-                "title": "Smart TVs at Amazon - 32 to 75 inch",
-                "link": "https://www.amazon.in/s?k=smart+tv",
-                "snippet": "Buy smart TVs from top brands. Samsung, LG, Sony, Mi. 43-inch 4K TVs from ₹24,999. Fast delivery.",
-                "domain": "amazon.in",
-                "approx_price": 24999,
-                "vendor": "Amazon"
-            },
-            {
-                "title": "Flipkart TVs - Best Deals on Smart TVs",
-                "url": "https://www.flipkart.com/televisions/pr?sid=ckf",
-                "snippet": "Shop LED & Smart TVs online. 32-inch HD TVs starting ₹12,999. EMI options available.",
+                "title": "Flipkart Chairs - Office & Home",
+                "link": "https://www.flipkart.com/furniture/chairs/pr?sid=wwe,y7b",
+                "snippet": "Buy Chairs Online. Office Chairs, Gaming Chairs, Plastic Chairs at Lowest Prices.",
                 "domain": "flipkart.com",
-                "approx_price": 12999,
+                "approx_price": 3500,
                 "vendor": "Flipkart"
             },
             {
-                "title": "Reliance Digital TVs - Latest Models",
-                "url": "https://www.reliancedigital.in/televisions/c/TV",
-                "snippet": "Buy smart TVs with installation. Samsung, LG, Sony range. 55-inch 4K from ₹39,999. Exchange offers.",
-                "domain": "reliancedigital.in",
-                "approx_price": 39999,
-                "vendor": "Reliance Digital"
+                "title": "Amazon.in: Chairs",
+                "link": "https://www.amazon.in/Chairs/b?ie=UTF8&node=1380064031",
+                "snippet": "Shop for Chairs at Amazon.in. Ergonomic office chairs, dining chairs, accent chairs.",
+                "domain": "amazon.in",
+                "approx_price": 2800,
+                "vendor": "Amazon"
+            }
+        ],
+        "tv": [
+             {
+                "title": "Flipkart Smart TVs",
+                "link": "https://www.flipkart.com/televisions/pr?sid=ckf",
+                "snippet": "Buy Smart TVs Online. 32 inch, 43 inch, 55 inch 4K Ultra HD TVs. Exchange Offers.",
+                "domain": "flipkart.com",
+                "approx_price": 15999,
+                "vendor": "Flipkart"
             },
             {
-                "title": "Croma TVs - Premium Electronics",
-                "url": "https://www.croma.com/televisions/c/9",
-                "snippet": "Latest 4K & 8K TVs from top brands. 43-inch onwards. Starting ₹26,999. Free installation.",
-                "domain": "croma.com",
-                "approx_price": 26999,
-                "vendor": "Croma"
+                 "title": "Amazon.in: Smart Televisions",
+                 "link": "https://www.amazon.in/Smart-TVs/b?ie=UTF8&node=1389396031",
+                 "snippet": "Smart TVs from top brands like Samsung, LG, Sony, Xiaomi. Great deals and offers.",
+                 "domain": "amazon.in",
+                 "approx_price": 14999,
+                 "vendor": "Amazon"
+            }
+        ],
+        "decor": [
+            {
+                "title": "Flipkart Home Decor",
+                "link": "https://www.flipkart.com/home-decor/pr?sid=arb",
+                "snippet": "Buy Home Decor Items Online. Wall Art, Clocks, Vases, Lamps & Lighting.",
+                "domain": "flipkart.com",
+                "approx_price": 999,
+                "vendor": "Flipkart"
             },
             {
-                "title": "Vijay Sales TVs - Best Prices Guaranteed",
-                "url": "https://www.vijaysales.com/televisions",
-                "snippet": "Smart TVs with best deals. All brands available. 50-inch 4K from ₹32,999. Extended warranty.",
-                "domain": "vijaysales.com",
-                "approx_price": 32999,
-                "vendor": "Vijay Sales"
+                "title": "Amazon.in: Home Decor",
+                "link": "https://www.amazon.in/Home-Decor/b?ie=UTF8&node=1380374031",
+                "snippet": "Shop for Home Decor at Amazon.in. Curtains, Rugs, Plants, Paintings and more.",
+                "domain": "amazon.in",
+                "approx_price": 850,
+                "vendor": "Amazon"
             }
         ]
     }
